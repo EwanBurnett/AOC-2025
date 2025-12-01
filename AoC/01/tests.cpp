@@ -4,16 +4,16 @@
 
 TEST(AoC_01, Case_1) {
 	const std::string testCase = "\
-		L68\
-		L30\
-		R48\
-		L5\
-		R60\
-		L55\
-		L1\
-		L99\
-		R14\
-		L82\n";
+L68\n\
+L30\n\
+R48\n\
+L5\n\
+R60\n\
+L55\n\
+L1\n\
+L99\n\
+R14\n\
+L82\n";
 
 	std::vector<AoC::instruction> instructions = AoC::ParseInstructions(testCase); 
 
