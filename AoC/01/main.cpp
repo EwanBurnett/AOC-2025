@@ -24,6 +24,7 @@ std::string LoadInputFile(const std::string& path) {
 
     return input; 
 }
+
 int main(int argc, char** argv) {
     printf("Hello AoC!\n"); 
 
@@ -47,9 +48,11 @@ int main(int argc, char** argv) {
     uint32_t startingNum = 50u; //TODO: cmd
 
     auto instructions = AoC::ParseInstructions(input); 
-    uint32_t code = AoC::PickLock(startingNum, instructions); 
+    uint32_t code = AoC::PickLock_Zeroes(startingNum, instructions); 
+    uint32_t code_2 = AoC::PickLock_0x434C49434B(startingNum, instructions);
 
-    printf("Cracked Code: %d\n", code); 
+    printf("Cracked Code (Zeroes): %d\n", code); 
+    printf("Cracked Code (0x434C49434B): %d\n", code_2); 
 
     return 0; 
 }

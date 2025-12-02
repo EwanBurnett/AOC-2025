@@ -34,7 +34,7 @@ std::vector<AoC::instruction> AoC::ParseInstructions(const std::string& instruct
     return res;
 }
 
-uint64_t AoC::PickLock(const uint8_t startingNum, const std::vector<AoC::instruction>& instructions)
+uint64_t AoC::PickLock_Zeroes(const uint8_t startingNum, const std::vector<AoC::instruction>& instructions)
 {
     uint64_t res = 0u;
 
@@ -54,7 +54,58 @@ uint64_t AoC::PickLock(const uint8_t startingNum, const std::vector<AoC::instruc
             assert(false && "Invalid instruction!");
         }
 
-        assert(num >= 0 && num < 100); 
+        assert(num >= 0 && num < 100);
+
+        if (num == 0) {
+            ++res;
+        }
+    }
+
+    return res;
+}
+
+uint64_t AoC::PickLock_0x434C49434B(const uint8_t startingNum, const std::vector<instruction>& instructions)
+{
+    uint64_t res = 0u;
+
+    int16_t num = startingNum;
+
+    for (const auto& ins : instructions) {
+        int16_t r = ins.second / 100;
+        if (r > 0u) {
+            res += r;
+        }
+
+        if (ins.first == AoC::Left) {
+            int16_t n = (num - (ins.second % 100));
+            if (n < 0) {
+                if (num != 0) {
+                    ++res; 
+                }
+                num = 100 + n; 
+            }
+            else {
+                num = n; 
+            }
+        }
+        else if (ins.first == AoC::Right) {
+            int16_t n = (num + (ins.second % 100));
+            if (n >= 100) {
+                if (n != 100) {
+                    ++res;
+                }
+                num = n - 100; 
+            }
+            else {
+                num = n; 
+            }
+        }
+        else {
+            //This shouldn't happen! 
+            assert(false && "Invalid instruction!");
+        }
+
+        assert(num >= 0 && num < 100);
 
         if (num == 0) {
             ++res;
