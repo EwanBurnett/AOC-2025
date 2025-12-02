@@ -4,7 +4,7 @@
 #include "aoc-01.h"
 
 std::string LoadInputFile(const std::string& path) {
-    std::string input = {}; 
+    std::string input = {};
     printf("Processing input file [%s].\n", path.c_str());
 
     std::ifstream file(path, std::ios::ate);
@@ -22,37 +22,48 @@ std::string LoadInputFile(const std::string& path) {
 
     file.close();
 
-    return input; 
+    return input;
 }
 
 int main(int argc, char** argv) {
-    printf("Hello AoC!\n"); 
+    printf("Hello AoC!\n");
+    std::string input = {};
+    uint32_t startingNum = 50u; 
 
-    if (argc <= 1 || strcmp(argv[1], "-h") == 0){
-        printf("Help:\n\t-h - Display this help page.\n\t-i - Process an input text file."); 
-    }
-
-    std::string input = {}; 
-
-    if (argc > 1) {
-        if (strcmp(argv[1], "-i") == 0) {
-            input = LoadInputFile(argv[2]); 
+    for (int i = 1; i < argc; ++i) {
+        if (strcmp(argv[i], "-i") == 0 && input.empty()) {
+            printf("Loading input [%s]\n", argv[i + 1]); 
+            input = LoadInputFile(argv[++i]);
         }
+
+        if (strcmp(argv[i], "-h") == 0) {
+            printf("Help:\n\t-h - Display this help page.\n\t-i - Process a given input text file.\n\t-s - Set the starting count.\n");
+        }
+
+        if (strcmp(argv[i], "-s") == 0) {
+            startingNum = std::atoi(argv[++i]); 
+            printf("Setting starting number to %d.\n", startingNum); 
+        }
+
     }
+
+    if (argc <= 1) {    
+        printf("Help:\n\t-h - Display this help page.\n\t-i - Process a given input text file.\n\t-s - Set the starting count.\n");
+    }
+
     if (input.empty()) {
-        input = LoadInputFile("input.txt"); 
+        printf("Loading default input (input.txt)\nTo override, launch the application using -i [input]. See help for more. (-h)\n");
+        input = LoadInputFile("input.txt");
     }
-    
-    printf("Input: \n%s\n", input.c_str()); 
 
-    uint32_t startingNum = 50u; //TODO: cmd
 
-    auto instructions = AoC::ParseInstructions(input); 
-    uint32_t code = AoC::PickLock_Zeroes(startingNum, instructions); 
+
+    auto instructions = AoC::ParseInstructions(input);
+    uint32_t code = AoC::PickLock_Zeroes(startingNum, instructions);
     uint32_t code_2 = AoC::PickLock_0x434C49434B(startingNum, instructions);
 
-    printf("Cracked Code (Zeroes): %d\n", code); 
-    printf("Cracked Code (0x434C49434B): %d\n", code_2); 
+    printf("Cracked Code (Zeroes): %d\n", code);
+    printf("Cracked Code (0x434C49434B): %d\n", code_2);
 
-    return 0; 
+    return 0;
 }
